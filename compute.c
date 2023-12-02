@@ -10,10 +10,10 @@
 void compute(){
 	//make an acceleration matrix which is NUMENTITIES squared in size;
 	int i,j,k;
-	vector3* values=(vector3*)malloc(sizeof(vector3)*NUMENTITIES*NUMENTITIES);
-	vector3** accels=(vector3**)malloc(sizeof(vector3*)*NUMENTITIES);
-	for (i=0;i<NUMENTITIES;i++)
-		accels[i]=&values[i*NUMENTITIES];
+	vector3* values=(vector3*)malloc(sizeof(vector3)*NUMENTITIES*NUMENTITIES);	//table of num^2 vectors
+	vector3** accels=(vector3**)malloc(sizeof(vector3*)*NUMENTITIES);	//table built in list form
+	for (i=0;i<NUMENTITIES;i++)													//for each entity:
+		accels[i]=&values[i*NUMENTITIES];		//the acceleration of that entity is the address of its row
 	//first compute the pairwise accelerations.  Effect is on the first argument.
 	for (i=0;i<NUMENTITIES;i++){
 		for (j=0;j<NUMENTITIES;j++){
