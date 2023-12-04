@@ -107,15 +107,15 @@ int main(int argc, char **argv)
 
 	//allocate and copy to device memory
 	cudaMalloc((vector3**)&d_hPos, sizeof(vector3) * NUMENTITIES);
-	cudaMemcpyHostToDevice(d_hPos, hPos, sizeof(vector3) * NUMENTITIES);
+	cudaMemcpy(d_hPos, hPos, sizeof(vector3) * NUMENTITIES, cudaMemcpyHostToDevice);
 
 	cudaMalloc((vector3**)&d_hVel, sizeof(vector3) * NUMENTITIES);
-	cudaMemcpyHostToDevice(d_hVel, hVel, sizeof(vector3) * NUMENTITIES);
+	cudaMemcpy(d_hVel, hVel, sizeof(vector3) * NUMENTITIES, cudaMemcpyHostToDevice);
 
 	cudaMalloc((vector3***)&accels, sizeof(vector3*)*NUMENTITIES);
 
 	cudaMalloc((double**)&d_mass, sizeof(double) * NUMENTITIES);
-	cudaMemcpyHostToDevice(d_mass, mass, sizeof(double) * NUMENTITIES);
+	cudaMemcpy(d_mass, mass, sizeof(double) * NUMENTITIES, cudaMemcpyHostToDevice);
 
 	for (t_now=0;t_now<DURATION;t_now+=INTERVAL){
 		compute<<<1, 256>>>;
