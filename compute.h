@@ -1,1 +1,1 @@
-void compute();
+__global__ void compute();
