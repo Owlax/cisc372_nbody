@@ -6,7 +6,7 @@
 //compute: Updates the positions and locations of the objects in the system based on gravity.
 //Parameters: None
 //Returns: None
-//Side Effect: Modifies the hPos and hVel arrays with the new positions and accelerations after 1 INTERVAL
+//Side Effect: Modifies the d_hPos and d_hVel arrays with the new positions and accelerations after 1 INTERVAL
 __global__ void compute(){
 	//make an acceleration matrix which is NUMENTITIES squared in size;
 	int i,j,k;
@@ -26,10 +26,10 @@ __global__ void compute(){
 			}
 			else{
 				vector3 distance;
-				for (k=0;k<3;k++) distance[k]=hPos[i][k]-hPos[j][k];
+				for (k=0;k<3;k++) distance[k]=d_hPos[i][k]-d_hPos[j][k];
 				double magnitude_sq=distance[0]*distance[0]+distance[1]*distance[1]+distance[2]*distance[2];
 				double magnitude=sqrt(magnitude_sq);
-				double accelmag=-1*GRAV_CONSTANT*mass[j]/magnitude_sq;
+				double accelmag=-1*GRAV_CONSTANT*d_mass[j]/magnitude_sq;
 				FILL_VECTOR(accels[i][j],accelmag*distance[0]/magnitude,accelmag*distance[1]/magnitude,accelmag*distance[2]/magnitude);
 			}
 		}
@@ -46,8 +46,8 @@ __global__ void compute(){
 		//compute the new velocity based on the acceleration and time interval
 		//compute the new position based on the velocity and time interval
 		for (k=0;k<3;k++){
-			hVel[i][k]+=accel_sum[k]*INTERVAL;
-			hPos[i][k]+=hVel[i][k]*INTERVAL;
+			d_hVel[i][k]+=accel_sum[k]*INTERVAL;
+			d_hPos[i][k]+=d_hVel[i][k]*INTERVAL;
 		}
 	}
 
