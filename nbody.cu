@@ -113,6 +113,9 @@ __host__ int main(int argc, char **argv)
 	cudaMemcpy(d_hVel, hVel, sizeof(vector3) * NUMENTITIES, cudaMemcpyHostToDevice);
 
 	cudaMalloc((vector3***)&accels, sizeof(vector3*)*NUMENTITIES);
+	for (int i = 0; i < NUMENTITIES; ++i) {
+		cudaMalloc((vector3**)&accels[i], sizeof(vector3) * NUMENTITIES);
+	}
 
 	cudaMalloc((double**)&d_mass, sizeof(double) * NUMENTITIES);
 	cudaMemcpy(d_mass, mass, sizeof(double) * NUMENTITIES, cudaMemcpyHostToDevice);
