@@ -7,14 +7,18 @@
 //Parameters: None
 //Returns: None
 //Side Effect: Modifies the hPos and hVel arrays with the new positions and accelerations after 1 INTERVAL
-void compute(){
+__global__ void compute(){
 	//make an acceleration matrix which is NUMENTITIES squared in size;
 	int i,j,k;
 	vector3* values=(vector3*)malloc(sizeof(vector3)*NUMENTITIES*NUMENTITIES);	//table of num^2 vectors
 	vector3** accels=(vector3**)malloc(sizeof(vector3*)*NUMENTITIES);	//table built in list form
-	for (i=0;i<NUMENTITIES;i++)													//for each entity:
+	for (i=0;i<NUMENTITIES;i++)	{												//for each entity:
 		accels[i]=&values[i*NUMENTITIES];		//the acceleration of that entity is the address of its row
+		//this *can* be parallelized but not necessary right away
+	}
 	//first compute the pairwise accelerations.  Effect is on the first argument.
+	//start parallel here: have each thread compute how two objects affect eachother and update the matrix
+	//something like set i and j to the two dimensions of the resulting accel matrix and have one thread for each pair
 	for (i=0;i<NUMENTITIES;i++){
 		for (j=0;j<NUMENTITIES;j++){
 			if (i==j) {
@@ -31,6 +35,8 @@ void compute(){
 		}
 	}
 	//sum up the rows of our matrix to get effect on each entity, then update velocity and position.
+	//sync threads
+	//have each thread add up one collumn
 	for (i=0;i<NUMENTITIES;i++){
 		vector3 accel_sum={0,0,0};
 		for (j=0;j<NUMENTITIES;j++){
@@ -44,6 +50,9 @@ void compute(){
 			hPos[i][k]+=hVel[i][k]*INTERVAL;
 		}
 	}
+
+	//I could do another sync threads and then have each thread compute one velocity and one position
+
 	free(accels);
 	free(values);
 }

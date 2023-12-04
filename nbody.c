@@ -91,6 +91,8 @@ void printSystem(FILE* handle){
 
 int main(int argc, char **argv)
 {
+	double* d_mass;
+	vector3** accels;
 	clock_t t0=clock();
 	int t_now;
 	//srand(time(NULL));
@@ -102,8 +104,21 @@ int main(int argc, char **argv)
 	#ifdef DEBUG
 	printSystem(stdout);
 	#endif
+
+	//allocate and copy to device memory
+	cudaMalloc((vector3**)&d_hPos, sizeof(hPos));
+	cudaMemcpyHostToDevice(d_hPos, hPos, sizeof(hPos));
+
+	cudaMalloc((vector3**)&d_hVel, sizeof(hVel));
+	cudaMemcpyHostToDevice(d_hVel, hVel, sizeof(hVel));
+
+	cudaMalloc((vector3***)&accels, sizeof(vector3*)*NUMENTITIES);
+
+	cudaMalloc((double**)&d_mass, sizeof(mass));
+	cudaMemcpyHostToDevice(d_mass, mass, sizeof(mass));
+
 	for (t_now=0;t_now<DURATION;t_now+=INTERVAL){
-		compute();
+		compute<<<1, 256>>>;
 	}
 	clock_t t1=clock()-t0;
 #ifdef DEBUG
