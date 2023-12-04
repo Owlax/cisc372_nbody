@@ -89,7 +89,7 @@ void printSystem(FILE* handle){
 	}
 }
 
-int main(int argc, char **argv)
+__host__ int main(int argc, char **argv)
 {
 	double* d_mass;
 	vector3** accels;
