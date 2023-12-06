@@ -10,15 +10,32 @@
 __global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass){
 	//make an acceleration matrix which is NUMENTITIES squared in size;
 	int i,j,k;
-	vector3* values=(vector3*)malloc(sizeof(vector3)*NUMENTITIES*NUMENTITIES);	//table of num^2 vectors
+	/*vector3* values=(vector3*)malloc(sizeof(vector3)*NUMENTITIES*NUMENTITIES);	//table of num^2 vectors
 	vector3** accels=(vector3**)malloc(sizeof(vector3*)*NUMENTITIES);	//table built in list form
 	for (i=0;i<NUMENTITIES;i++)	{												//for each entity:
 		accels[i]=&values[i*NUMENTITIES];		//the acceleration of that entity is the address of its row
 		//this *can* be parallelized but not necessary right away
-	}
+	}*/ //not needed
 	//first compute the pairwise accelerations.  Effect is on the first argument.
 	//start parallel here: have each thread compute how two objects affect eachother and update the matrix
 	//something like set i and j to the two dimensions of the resulting accel matrix and have one thread for each pair
+	int row = blockIdx.y * blockDim.y + threadIdx.y;
+    int col = blockIdx.x * blockDim.x + threadIdx.x;
+
+	//TODO: add a check that row*col<=NUMENTITIES
+	if (row==col) {
+		FILL_VECTOR(accels[row][col],0,0,0);
+	}
+	else{
+		vector3 distance;
+		for (k=0;k<3;k++) distance[k]=d_hPos[row][k]-d_hPos[col][k];
+		double magnitude_sq=distance[0]*distance[0]+distance[1]*distance[1]+distance[2]*distance[2];
+		double magnitude=sqrt(magnitude_sq);
+		double accelmag=-1*GRAV_CONSTANT*d_mass[j]/magnitude_sq;
+		FILL_VECTOR(accels[row][col],accelmag*distance[0]/magnitude,accelmag*distance[1]/magnitude,accelmag*distance[2]/magnitude);
+	}
+
+/*
 	for (i=0;i<NUMENTITIES;i++){
 		for (j=0;j<NUMENTITIES;j++){
 			if (i==j) {
@@ -34,6 +51,8 @@ __global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass){
 			}
 		}
 	}
+	*/
+	
 	//sum up the rows of our matrix to get effect on each entity, then update velocity and position.
 	//sync threads
 	//have each thread add up one collumn
