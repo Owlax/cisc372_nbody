@@ -32,7 +32,7 @@ __global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector
 
 	//sum up the rows of our matrix to get effect on each entity, then update velocity and position.
 	//sync threads
-	//have each thread add up one collumn
+	
 	if(row*col<NUMENTITIES){
 		vector3 accel_sum={0,0,0};
 		for (int k=0;k<3;k++){
