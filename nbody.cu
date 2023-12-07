@@ -122,7 +122,7 @@ __host__ int main(int argc, char **argv)
 
 	const int BLOCK_SIZE = 1024;
 	dim3 blockDim(BLOCK_SIZE, BLOCK_SIZE, 1);
-	dim3 gridDim((numEntities + blockDim.x - 1) / blockDim.x, (numEntities + blockDim.y - 1) / blockDim.y, 1);
+	dim3 gridDim((NUMENTITIES + blockDim.x - 1) / blockDim.x, (NUMENTITIES + blockDim.y - 1) / blockDim.y, 1);
 	//calls kernel
 	for (t_now=0;t_now<DURATION;t_now+=INTERVAL){
 		compute<<<gridDim, blockDim>>>(d_hPos, d_hVel, d_mass, accels);
