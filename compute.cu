@@ -33,14 +33,16 @@ __global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector
 	//sum up the rows of our matrix to get effect on each entity, then update velocity and position.
 	//sync threads
 	//have each thread add up one collumn
-	vector3 accel_sum={0,0,0};
-	for (int k=0;k<3;k++){
-		accel_sum[k]+=accels[row][col][k];
-	}
-	//compute the new velocity based on the acceleration and time interval
-	//compute the new position based on the velocity and time interval
-	for (int k=0;k<3;k++){
-		d_hVel[row][k]+=accel_sum[k]*INTERVAL;
-		d_hPos[row][k]+=d_hVel[row][k]*INTERVAL;
+	if(row*col<NUMENTITIES){
+		vector3 accel_sum={0,0,0};
+		for (int k=0;k<3;k++){
+			accel_sum[k]+=accels[row][col][k];
+		}
+		//compute the new velocity based on the acceleration and time interval
+		//compute the new position based on the velocity and time interval
+		for (int k=0;k<3;k++){
+			d_hVel[row][k]+=accel_sum[k]*INTERVAL;
+			d_hPos[row][k]+=d_hVel[row][k]*INTERVAL;
+		}
 	}
 }
