@@ -121,7 +121,7 @@ __host__ int main(int argc, char **argv)
 	cudaMemcpy(d_mass, mass, sizeof(double) * NUMENTITIES, cudaMemcpyHostToDevice);
 
 	for (t_now=0;t_now<DURATION;t_now+=INTERVAL){
-		compute<<<1, 256>>>(d_hPos, d_hVel, d_mass);
+		compute<<<1, 256>>>(d_hPos, d_hVel, d_mass, accels);
 	}
 	clock_t t1=clock()-t0;
 #ifdef DEBUG
