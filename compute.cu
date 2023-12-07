@@ -7,7 +7,7 @@
 //Parameters: None
 //Returns: None
 //Side Effect: Modifies the d_hPos and d_hVel arrays with the new positions and accelerations after 1 INTERVAL
-__global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass){
+__global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector3** accels){
 	//make an acceleration matrix which is NUMENTITIES squared in size;
 	int k;
 	//first compute the pairwise accelerations.  Effect is on the first argument.
