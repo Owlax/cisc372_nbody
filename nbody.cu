@@ -138,7 +138,7 @@ __host__ int main(int argc, char **argv)
 	cudaFree(d_hVel);
 	cudaFree(d_mass);
     for (int i = 0; i < NUMENTITIES; ++i) {
-        cudaFree(d_accels[i]);
+        cudaFree(accels[i]);
     }
     cudaFree(accels);
 
