@@ -120,9 +120,11 @@ __host__ int main(int argc, char **argv)
 	cudaMalloc((double**)&d_mass, sizeof(double) * NUMENTITIES);
 	cudaMemcpy(d_mass, mass, sizeof(double) * NUMENTITIES, cudaMemcpyHostToDevice);
 
+	dim3 blockDim(BLOCK_SIZE, 1, 1);
+	dim3 gridDim((NUMENTITIES + blockDim.x - 1) / blockDim.x, 1, 1);
 	//calls kernel
 	for (t_now=0;t_now<DURATION;t_now+=INTERVAL){
-		compute<<<(numEntities + BLOCK_SIZE - 1) / BLOCK_SIZE, BLOCK_SIZE>>>(d_hPos, d_hVel, d_mass, accels);
+		compute<<<gridDim, blockDim>>>(d_hPos, d_hVel, d_mass, accels);
 		cudaDeviceSynchronize();
 	}
 	clock_t t1=clock()-t0;
@@ -132,13 +134,13 @@ __host__ int main(int argc, char **argv)
 
 	printf("This took a total time of %f seconds\n",(double)t1/CLOCKS_PER_SEC);
 
-	cudaFree(d_Pos);
-	cudaFree(d_Vel);
-	cudaFree(d_Mass);
+	cudaFree(d_hPos);
+	cudaFree(d_hVel);
+	cudaFree(d_mass);
     for (int i = 0; i < NUMENTITIES; ++i) {
         cudaFree(d_accels[i]);
     }
-    cudaFree(d_accels);
+    cudaFree(accels);
 
 	freeHostMemory();
 }
