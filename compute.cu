@@ -16,11 +16,10 @@ __global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector
 	int row = blockIdx.y * blockDim.y + threadIdx.y;
     int col = blockIdx.x * blockDim.x + threadIdx.x;
 
-	//TODO: add a check that row*col<=NUMENTITIES
-	if (row==col) {
+	if (row==col && row*col<NUMENTITIES) {
 		FILL_VECTOR(accels[row][col],0,0,0);
 	}
-	else{
+	else if(row*col<NUMENTITIES){
 		vector3 distance;
 		for (k=0;k<3;k++) distance[k]=d_hPos[row][k]-d_hPos[col][k];
 		double magnitude_sq=distance[0]*distance[0]+distance[1]*distance[1]+distance[2]*distance[2];
@@ -45,9 +44,4 @@ __global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector
 		d_hVel[row][k]+=accel_sum[k]*INTERVAL;
 		d_hPos[row][k]+=d_hVel[row][k]*INTERVAL;
 	}
-
-	//I could do another sync threads and then have each thread compute one velocity and one position
-
-	free(accels);
-	free(values);
 }
