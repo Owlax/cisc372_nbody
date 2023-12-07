@@ -128,6 +128,8 @@ __host__ int main(int argc, char **argv)
 		compute<<<gridDim, blockDim>>>(d_hPos, d_hVel, d_mass, accels);
 		cudaDeviceSynchronize();
 	}
+	cudaMemcpy(hPos, d_hPos, sizeof(vector3) * NUMENTITIES, cudaMemcpyDeviceToHost);
+	cudaMemcpy(hVel, d_hVel, sizeof(vector3) * NUMENTITIES, cudaMemcpyDeviceToHost);
 	clock_t t1=clock()-t0;
 #ifdef DEBUG
 	printSystem(stdout);
