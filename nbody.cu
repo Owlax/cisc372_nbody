@@ -120,14 +120,25 @@ __host__ int main(int argc, char **argv)
 	cudaMalloc((double**)&d_mass, sizeof(double) * NUMENTITIES);
 	cudaMemcpy(d_mass, mass, sizeof(double) * NUMENTITIES, cudaMemcpyHostToDevice);
 
+	//calls kernel
 	for (t_now=0;t_now<DURATION;t_now+=INTERVAL){
-		compute<<<1, 256>>>(d_hPos, d_hVel, d_mass, accels);
+		compute<<<(numEntities + BLOCK_SIZE - 1) / BLOCK_SIZE, BLOCK_SIZE>>>(d_hPos, d_hVel, d_mass, accels);
+		cudaDeviceSynchronize();
 	}
 	clock_t t1=clock()-t0;
 #ifdef DEBUG
 	printSystem(stdout);
 #endif
+
 	printf("This took a total time of %f seconds\n",(double)t1/CLOCKS_PER_SEC);
+
+	cudaFree(d_Pos);
+	cudaFree(d_Vel);
+	cudaFree(d_Mass);
+    for (int i = 0; i < NUMENTITIES; ++i) {
+        cudaFree(d_accels[i]);
+    }
+    cudaFree(d_accels);
 
 	freeHostMemory();
 }
