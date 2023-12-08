@@ -29,7 +29,7 @@ __global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector
 			double accelmag=-1*GRAV_CONSTANT*d_mass[col]/magnitude_sq;
 			FILL_VECTOR(accels[row][col],accelmag*distance[0]/magnitude,accelmag*distance[1]/magnitude,accelmag*distance[2]/magnitude);
 		}
-		
+
 		vector3 accel_sum={0,0,0};
 		for (int k=0;k<3;k++){
 			accel_sum[k]=accels[row][col][k];
@@ -37,8 +37,8 @@ __global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector
 		//compute the new velocity based on the acceleration and time interval
 		//compute the new position based on the velocity and time interval
 		for (int k=0;k<3;k++){
-			d_hVel[row][k] = 0;//+=accel_sum[k]*INTERVAL;
-			d_hPos[row][k] = 0;//=d_hVel[row][k]*INTERVAL;
+			d_hVel[row][k] = 5;//+=accel_sum[k]*INTERVAL;
+			d_hPos[row][k] = 5;//=d_hVel[row][k]*INTERVAL;
 		}
 	}
 }
