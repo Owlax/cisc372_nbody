@@ -21,7 +21,7 @@ __global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector
 		accels[row * NUMENTITIES + col] = &values[row * NUMENTITIES + col];
 	}
 
-	printf("%d", accels[row][col]);
+	printf("%d", accels[row][col][1]);
 
 	if (row==col && row < NUMENTITIES && col < NUMENTITIES) {
 		FILL_VECTOR(accels[row][col],0,0,0);
