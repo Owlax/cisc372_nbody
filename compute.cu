@@ -20,7 +20,7 @@ __global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector
 		accels[row * NUMENTITIES + col] = &values[row * NUMENTITIES + col];
 	}
 
-	if (row==col && row < NUMENTITIES && col < NUMENTITIES) {
+	/*if (row==col && row < NUMENTITIES && col < NUMENTITIES) {
 		FILL_VECTOR(accels[row][col],0,0,0);
 	}
 	else if(row < NUMENTITIES && col < NUMENTITIES){
@@ -30,7 +30,7 @@ __global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector
 		double magnitude=sqrt(magnitude_sq);
 		double accelmag=-1*GRAV_CONSTANT*d_mass[col]/magnitude_sq;
 		FILL_VECTOR(accels[row][col],accelmag*distance[0]/magnitude,accelmag*distance[1]/magnitude,accelmag*distance[2]/magnitude);
-	}
+	}*/
 }
 
 
