@@ -108,10 +108,10 @@ __host__ int main(int argc, char **argv)
 
 	//allocate and copy to device memory
 	cudaMallocManaged((vector3**)&d_hPos, sizeof(vector3) * NUMENTITIES);
-	cudaMemcpy(d_hPos, hPos, sizeof(vector3) * NUMENTITIES, cudaMemcpyHostToDevice);
+	cudaMemcpy(d_hPos, hPos, sizeof(vector3) * NUMENTITIES, cudaMemcpyDefault);
 
 	cudaMallocManaged((vector3**)&d_hVel, sizeof(vector3) * NUMENTITIES);
-	cudaMemcpy(d_hVel, hVel, sizeof(vector3) * NUMENTITIES, cudaMemcpyHostToDevice);
+	cudaMemcpy(d_hVel, hVel, sizeof(vector3) * NUMENTITIES, cudaMemcpyDefault);
 
 
 	
