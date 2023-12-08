@@ -20,7 +20,7 @@ __global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector
 	}
 
 	if (row==col && row < NUMENTITIES && col < NUMENTITIES) {
-		FILL_VECTOR((*accels[row])[col],0,0,0);
+		FILL_VECTOR(accels[row][col],0,0,0);
 	}
 	else if(row < NUMENTITIES && col < NUMENTITIES){
 		vector3 distance;
