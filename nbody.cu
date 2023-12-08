@@ -79,7 +79,7 @@ void printSystem(FILE* handle){
 	for (i=0;i<NUMENTITIES;i++){
 		fprintf(handle,"pos=(");
 		for (j=0;j<3;j++){
-			fprintf(handle,"%lf,",hPos[i][j]);
+			fprintf(handle,"%lf,",d_hPos[i][j]);
 		}
 		printf("),v=(");
 		for (j=0;j<3;j++){
@@ -131,7 +131,6 @@ __host__ int main(int argc, char **argv)
 		compute<<<blocks, BLOCK_SIZE>>>(d_hPos, d_hVel, d_mass, accels, values);
 		//compute2electricboogaloo<<<blocks, BLOCK_SIZE>>>(d_hPos, d_hVel, d_mass, accels, values);
 		cudaDeviceSynchronize();
-		printf("ran");
 	}
 
     cudaMemcpy(hVel, d_hVel, sizeof(vector3) * NUMENTITIES, cudaMemcpyDefault);
