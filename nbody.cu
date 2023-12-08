@@ -106,11 +106,37 @@ __host__ int main(int argc, char **argv)
 	//printSystem(stdout);
 	#endif
 
+	//allocate and copy to device memory
+	cudaMallocManaged((vector3**)&d_hPos, sizeof(vector3) * NUMENTITIES);
+	cudaMemcpy(d_hPos, hPos, sizeof(vector3) * NUMENTITIES, cudaMemcpyDefault);
+
+	cudaMallocManaged((vector3**)&d_hVel, sizeof(vector3) * NUMENTITIES);
+	cudaMemcpy(d_hVel, hVel, sizeof(vector3) * NUMENTITIES, cudaMemcpyDefault);
+
+
+	
+	cudaMalloc((void**)&values, sizeof(vector3*)*NUMENTITIES*NUMENTITIES);
+
+	cudaMalloc((void**)&accels, sizeof(vector3*)*NUMENTITIES);
+
+
+
+	cudaMalloc((double**)&d_mass, sizeof(double) * NUMENTITIES);
+	cudaMemcpy(d_mass, mass, sizeof(double) * NUMENTITIES, cudaMemcpyHostToDevice);
+	cudaDeviceSynchronize();
+	const int BLOCK_SIZE = 1024;
+	int blocks = (NUMENTITIES + BLOCK_SIZE - 1) / BLOCK_SIZE;
 	//calls kernel
 	for (t_now=0;t_now<DURATION;t_now+=INTERVAL){
-		compute();
+		compute<<<blocks, BLOCK_SIZE>>>(d_hPos, d_hVel, d_mass, accels, values);
+		//compute2electricboogaloo<<<blocks, BLOCK_SIZE>>>(d_hPos, d_hVel, d_mass, accels, values);
+		cudaDeviceSynchronize();
+		cudaMemcpy(d_hVel, hVel, sizeof(vector3) * NUMENTITIES, cudaMemcpyDefault);
+		cudaMemcpy(d_hPos, hPos, sizeof(vector3) * NUMENTITIES, cudaMemcpyDefault);
 	}
 
+    cudaMemcpy(hVel, d_hVel, sizeof(vector3) * NUMENTITIES, cudaMemcpyDefault);
+    cudaMemcpy(hPos, d_hPos, sizeof(vector3) * NUMENTITIES, cudaMemcpyDefault);
 	clock_t t1=clock()-t0;
 
 
@@ -126,6 +152,12 @@ if (cudaError != cudaSuccess) {
 }
 
 	printf("This took a total time of %f seconds\n",(double)t1/CLOCKS_PER_SEC);
+
+	cudaFree(d_hPos);
+	cudaFree(d_hVel);
+	cudaFree(d_mass);
+    cudaFree(values);
+    cudaFree(accels);
 
 	freeHostMemory();
 }
