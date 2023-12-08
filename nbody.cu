@@ -113,10 +113,11 @@ __host__ int main(int argc, char **argv)
 	cudaMallocManaged((vector3**)&d_hVel, sizeof(vector3) * NUMENTITIES);
 	cudaMemcpy(d_hVel, hVel, sizeof(vector3) * NUMENTITIES, cudaMemcpyDefault);
 
-	accels = (vector3**)malloc(sizeof(vector3*) * NUMENTITIES);
-	for(int i = 0; i < NUMENTITIES; i++) {
-		cudaMalloc(&accels[i], sizeof(vector3) * NUMENTITIES);
-	}
+
+	
+	cudaMalloc((void**)&values, sizeof(vector3*)*NUMENTITIES*NUMENTITIES);
+
+	cudaMalloc((void**)&accels, sizeof(vector3*)*NUMENTITIES);
 
 
 
@@ -127,7 +128,7 @@ __host__ int main(int argc, char **argv)
 	int blocks = (NUMENTITIES + BLOCK_SIZE - 1) / BLOCK_SIZE;
 	//calls kernel
 	for (t_now=0;t_now<DURATION;t_now+=INTERVAL){
-		compute<<<blocks, BLOCK_SIZE>>>(d_hPos, d_hVel, d_mass, accels);
+		compute<<<blocks, BLOCK_SIZE>>>(d_hPos, d_hVel, d_mass, accels, values);
 		//compute2electricboogaloo<<<blocks, BLOCK_SIZE>>>(d_hPos, d_hVel, d_mass, accels, values);
 		cudaDeviceSynchronize();
 	}
@@ -150,6 +151,7 @@ if (cudaError != cudaSuccess) {
 	cudaFree(d_hPos);
 	cudaFree(d_hVel);
 	cudaFree(d_mass);
+    cudaFree(values);
     cudaFree(accels);
 
 	freeHostMemory();
