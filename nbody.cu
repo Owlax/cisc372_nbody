@@ -127,11 +127,5 @@ if (cudaError != cudaSuccess) {
 
 	printf("This took a total time of %f seconds\n",(double)t1/CLOCKS_PER_SEC);
 
-	cudaFree(d_hPos);
-	cudaFree(d_hVel);
-	cudaFree(d_mass);
-    cudaFree(values);
-    cudaFree(accels);
-
 	freeHostMemory();
 }
