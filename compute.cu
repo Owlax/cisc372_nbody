@@ -14,16 +14,15 @@ __global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector
 	//something like set i and j to the two dimensions of the resulting accel matrix and have one thread for each pair
 	int row = blockIdx.y * blockDim.y + threadIdx.y;
     int col = blockIdx.x * blockDim.x + threadIdx.x;
-	
+
 	if (row < NUMENTITIES && col < NUMENTITIES) {
         accels[row]=&values[row*NUMENTITIES];	
 		accels[row * NUMENTITIES + col] = &values[row * NUMENTITIES + col];
-	}
 
-	if (row==col && row < NUMENTITIES && col < NUMENTITIES) {
+	if (row==col) {
 		FILL_VECTOR(accels[row][col],0,0,0);
 	}
-	else if(row < NUMENTITIES && col < NUMENTITIES){
+	else{
 		vector3 distance;
 		for (int k=0;k<3;k++) distance[k]=d_hPos[row][k]-d_hPos[col][k];
 		double magnitude_sq=distance[0]*distance[0]+distance[1]*distance[1]+distance[2]*distance[2];
