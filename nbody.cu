@@ -93,7 +93,7 @@ __host__ int main(int argc, char **argv)
 {
 	double* d_mass;
 	vector3* values;
-	vector3** accels;
+	//vector3** accels;
 	clock_t t0=clock();
 	int t_now;
 	//srand(time(NULL));
