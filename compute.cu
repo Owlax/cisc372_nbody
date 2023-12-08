@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <stdio.h>
 #include <math.h>
 #include "vector.h"
 #include "config.h"
@@ -20,8 +19,6 @@ __global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector
         accels[row]=&values[row*NUMENTITIES];	
 		accels[row * NUMENTITIES + col] = &values[row * NUMENTITIES + col];
 	}
-
-	printf("%d", accels[row][col][1]);
 
 	if (row==col && row < NUMENTITIES && col < NUMENTITIES) {
 		FILL_VECTOR(accels[row][col],0,0,0);
