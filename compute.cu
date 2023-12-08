@@ -7,11 +7,15 @@
 //Parameters: None
 //Returns: None
 //Side Effect: Modifies the d_hPos and d_hVel arrays with the new positions and accelerations after 1 INTERVAL
-__global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector3** accels){
+__global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector3** accels, vector* values){
 	//make an acceleration matrix which is NUMENTITIES squared in size;
 	//first compute the pairwise accelerations.  Effect is on the first argument.
 	//start parallel here: have each thread compute how two objects affect eachother and update the matrix
 	//something like set i and j to the two dimensions of the resulting accel matrix and have one thread for each pair
+	
+	for (i=0;i<NUMENTITIES;i++){													//for each entity:
+		accels[i]=&values[i*NUMENTITIES];	
+	}
 	int col = blockIdx.y * blockDim.y + threadIdx.y;
     int row = blockIdx.x * blockDim.x + threadIdx.x;
 

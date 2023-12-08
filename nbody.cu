@@ -92,6 +92,7 @@ void printSystem(FILE* handle){
 __host__ int main(int argc, char **argv)
 {
 	double* d_mass;
+	vector3* values;
 	vector3** accels;
 	clock_t t0=clock();
 	int t_now;
@@ -112,10 +113,13 @@ __host__ int main(int argc, char **argv)
 	cudaMalloc((vector3**)&d_hVel, sizeof(vector3) * NUMENTITIES);
 	cudaMemcpy(d_hVel, hVel, sizeof(vector3) * NUMENTITIES, cudaMemcpyHostToDevice);
 
+
+	
+	cudaMalloc((vector3**)&values, sizeof(vector3*)*NUMENTITIES);
+
 	cudaMalloc((vector3***)&accels, sizeof(vector3*)*NUMENTITIES);
-	for (int i = 0; i < NUMENTITIES; ++i) {
-		cudaMalloc((vector3**)&accels[i], sizeof(vector3) * NUMENTITIES);
-	}
+
+
 
 	cudaMalloc((double**)&d_mass, sizeof(double) * NUMENTITIES);
 	cudaMemcpy(d_mass, mass, sizeof(double) * NUMENTITIES, cudaMemcpyHostToDevice);
