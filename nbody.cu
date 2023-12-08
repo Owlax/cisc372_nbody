@@ -124,7 +124,7 @@ __host__ int main(int argc, char **argv)
 	cudaMalloc((double**)&d_mass, sizeof(double) * NUMENTITIES);
 	cudaMemcpy(d_mass, mass, sizeof(double) * NUMENTITIES, cudaMemcpyHostToDevice);
 
-	const int BLOCK_SIZE = 1024;
+	const int BLOCK_SIZE = 1000;
 	dim3 blockDim(BLOCK_SIZE, BLOCK_SIZE, 1);
 	dim3 gridDim((NUMENTITIES + blockDim.x - 1) / blockDim.x, (NUMENTITIES + blockDim.y - 1) / blockDim.y, 1);
 	//calls kernel
