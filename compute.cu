@@ -40,5 +40,7 @@ __global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector
 			d_hVel[row][k] +=accel_sum[k]*INTERVAL;
 			d_hPos[row][k] +=d_hVel[row][k]*INTERVAL;
 		}
+		printf("Thread %d: Velocity: (%lf, %lf, %lf)\n", threadIdx.x, d_hVel[row][0], d_hVel[row][1], d_hVel[row][2]);
+		printf("Thread %d: Acceleration sum: (%lf, %lf, %lf)\n", threadIdx.x, accel_sum[0], accel_sum[1], accel_sum[2]);
 	}
 }
