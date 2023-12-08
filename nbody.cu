@@ -4,9 +4,9 @@
 #include <math.h>
 #include <cuda_runtime.h>
 #include "vector.h"
-#include "config.cuh"
+#include "config.h"
 #include "planets.h"
-#include "compute.h"
+#include "compute.cuh"
 
 // represents the objects in the system.  Global variables
 vector3 *hVel, *d_hVel;
