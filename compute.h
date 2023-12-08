@@ -1,1 +1,0 @@
-__global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector3** accels, vector3* values);
