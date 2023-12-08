@@ -115,21 +115,20 @@ __host__ int main(int argc, char **argv)
 
 
 	
-	cudaMalloc((vector3**)&values, sizeof(vector3*)*NUMENTITIES*NUMENTITIES);
+	cudaMalloc((void**)&values, sizeof(vector3*)*NUMENTITIES*NUMENTITIES);
 
-	cudaMalloc((vector3**)&accels, sizeof(vector3*)*NUMENTITIES);
+	cudaMalloc((void3**)&accels, sizeof(vector3*)*NUMENTITIES);
 
 
 
 	cudaMalloc((double**)&d_mass, sizeof(double) * NUMENTITIES);
 	cudaMemcpy(d_mass, mass, sizeof(double) * NUMENTITIES, cudaMemcpyHostToDevice);
 
-	const int BLOCK_SIZE = 5;
-	dim3 blockDim(BLOCK_SIZE, BLOCK_SIZE, 1);
-	dim3 gridDim((NUMENTITIES + blockDim.x - 1) / blockDim.x, (NUMENTITIES + blockDim.y - 1) / blockDim.y, 1);
+	const int BLOCK_SIZE = 256;
+	int blocks = (NUMENTITIES + BLOCK_SIZE - 1) / BLOCK_SIZE;
 	//calls kernel
 	for (t_now=0;t_now<DURATION;t_now+=INTERVAL){
-		compute<<<gridDim, blockDim>>>(d_hPos, d_hVel, d_mass, accels, values);
+		compute<<<blocks, BLOCK_SIZE>>>(d_hPos, d_hVel, d_mass, accels, values);
 		compute2electricboogaloo<<<gridDim, blockDim>>>(d_hPos, d_hVel, d_mass, accels, values);
 		cudaDeviceSynchronize();
 	}
