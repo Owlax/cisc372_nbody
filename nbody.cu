@@ -150,7 +150,6 @@ if (cudaError != cudaSuccess) {
 	cudaFree(d_hPos);
 	cudaFree(d_hVel);
 	cudaFree(d_mass);
-    cudaFree(values);
     cudaFree(accels);
 
 	freeHostMemory();
