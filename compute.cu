@@ -18,7 +18,7 @@ __global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector
     int col = t%NUMENTITIES;
 
 	accels[t]=&values[t*NUMENTITIES];	
-	if (t < NUMENTITIES * NUMENTITIES) {
+	if (row < NUMENTITIES && col < NUMENTITIES) {
 		if (row==col) {
 			FILL_VECTOR(accels[row][col],0,0,0);
 		}
@@ -33,7 +33,7 @@ __global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector
 
 		vector3 accel_sum={0,0,0};
 		for (int k=0;k<3;k++){
-			accel_sum[k]+=accels[row][col][k];
+			accel_sum[0]+=accels[row][col][0];
 		}
 		//compute the new velocity based on the acceleration and time interval
 		//compute the new position based on the velocity and time interval
