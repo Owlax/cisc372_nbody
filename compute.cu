@@ -13,7 +13,7 @@ __global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector
 	//start parallel here: have each thread compute how two objects affect eachother and update the matrix
 	//something like set i and j to the two dimensions of the resulting accel matrix and have one thread for each pair
 	
-	for (inti=0;i<NUMENTITIES;i++){													//for each entity:
+	for (int i=0;i<NUMENTITIES;i++){													//for each entity:
 		accels[i]=&values[i*NUMENTITIES];	
 	}
 	int col = blockIdx.y * blockDim.y + threadIdx.y;
