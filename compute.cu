@@ -23,9 +23,9 @@ __global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector
 	if (row==col && row < NUMENTITIES && col < NUMENTITIES) {
 		FILL_VECTOR(accels[row][col],0,0,0);
 	}
-	/*else if(row < NUMENTITIES && col < NUMENTITIES){
+	else if(row < NUMENTITIES && col < NUMENTITIES){
 		vector3 distance;
-		for (int k=0;k<3;k++) distance[k]=d_hPos[row][k]-d_hPos[col][k];
+		/*for (int k=0;k<3;k++) distance[k]=d_hPos[row][k]-d_hPos[col][k];
 		double magnitude_sq=distance[0]*distance[0]+distance[1]*distance[1]+distance[2]*distance[2];
 		double magnitude=sqrt(magnitude_sq);
 		double accelmag=-1*GRAV_CONSTANT*d_mass[col]/magnitude_sq;
