@@ -137,15 +137,17 @@ __host__ int main(int argc, char **argv)
 	cudaMemcpy(hVel, d_hVel, sizeof(vector3) * NUMENTITIES, cudaMemcpyDeviceToHost);
 	clock_t t1=clock()-t0;
 
-	cudaError_t cudaError = cudaGetLastError();
-	if (cudaError != cudaSuccess) {
-			fprintf(stderr, "CUDA error: %s\n", cudaGetErrorString(cudaError));
-			return 1;
-	}
+
 
 	#ifdef DEBUG
 	printSystem(stdout);
 #endif
+
+cudaError_t cudaError = cudaGetLastError();
+if (cudaError != cudaSuccess) {
+		fprintf(stderr, "CUDA error: %s\n", cudaGetErrorString(cudaError));
+		return 1;
+}
 
 	printf("This took a total time of %f seconds\n",(double)t1/CLOCKS_PER_SEC);
 
