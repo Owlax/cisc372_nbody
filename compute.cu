@@ -34,6 +34,8 @@ __global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector
 
 
 __global__ void compute2electricboogaloo(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector3** accels, vector3* values){
+	int col = blockIdx.y * blockDim.y + threadIdx.y;
+    int row = blockIdx.x * blockDim.x + threadIdx.x;
 	if(row*col<NUMENTITIES){
 		vector3 accel_sum={0,0,0};
 		for (int k=0;k<3;k++){
