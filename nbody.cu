@@ -152,7 +152,7 @@ __host__ int main(int argc, char **argv)
 	cudaFree(d_hPos);
 	cudaFree(d_hVel);
 	cudaFree(d_mass);
-    cudaFree(values)
+    cudaFree(values);
     cudaFree(accels);
 
 	freeHostMemory();
