@@ -16,7 +16,7 @@ __global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector
     int row = blockIdx.x * blockDim.x + threadIdx.x;
 	
 	if (row < NUMENTITIES && col < NUMENTITIES) {
-        accels[row * NUMENTITIES + col] = &values[row * NUMENTITIES + col];
+        accels[row]=&values[row*NUMENTITIES];	
 	}
 
 	if (row==col && row < NUMENTITIES && col < NUMENTITIES) {
