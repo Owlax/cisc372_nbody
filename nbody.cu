@@ -4,7 +4,7 @@
 #include <math.h>
 #include <cuda_runtime.h>
 #include "vector.h"
-#include "config.h"
+#include "config.cuh"
 #include "planets.h"
 #include "compute.h"
 
