@@ -83,7 +83,7 @@ void printSystem(FILE* handle){
 		}
 		printf("),v=(");
 		for (j=0;j<3;j++){
-			fprintf(handle,"%lf,",hVel[i][j]);
+			fprintf(handle,"%lf,",d_hVel[i][j]);
 		}
 		fprintf(handle,"),m=%lf\n",mass[i]);
 	}
@@ -103,7 +103,7 @@ __host__ int main(int argc, char **argv)
 	randomFill(NUMPLANETS + 1, NUMASTEROIDS);
 	//now we have a system.
 	#ifdef DEBUG
-	printSystem(stdout);
+	//printSystem(stdout);
 	#endif
 
 	//allocate and copy to device memory
