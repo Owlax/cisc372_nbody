@@ -130,6 +130,7 @@ __host__ int main(int argc, char **argv)
 	//calls kernel
 	for (t_now=0;t_now<DURATION;t_now+=INTERVAL){
 		compute<<<gridDim, blockDim>>>(d_hPos, d_hVel, d_mass, accels, values);
+		compute2electricboogaloo<<<gridDim, blockDim>>>(d_hPos, d_hVel, d_mass, accels, values)
 		cudaDeviceSynchronize();
 	}
 	cudaMemcpy(hPos, d_hPos, sizeof(vector3) * NUMENTITIES, cudaMemcpyDeviceToHost);
