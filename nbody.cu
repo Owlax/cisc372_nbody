@@ -117,7 +117,7 @@ __host__ int main(int argc, char **argv)
 	
 	cudaMalloc((void**)&values, sizeof(vector3*)*NUMENTITIES*NUMENTITIES);
 
-	cudaMalloc((void3**)&accels, sizeof(vector3*)*NUMENTITIES);
+	cudaMalloc((void**)&accels, sizeof(vector3*)*NUMENTITIES);
 
 
 
