@@ -113,11 +113,10 @@ __host__ int main(int argc, char **argv)
 	cudaMallocManaged((vector3**)&d_hVel, sizeof(vector3) * NUMENTITIES);
 	cudaMemcpy(d_hVel, hVel, sizeof(vector3) * NUMENTITIES, cudaMemcpyDefault);
 
-
-	
-	cudaMalloc((void**)&values, sizeof(vector3*)*NUMENTITIES*NUMENTITIES);
-
 	cudaMalloc((void**)&accels, sizeof(vector3*)*NUMENTITIES);
+	for(int i = 0; i < NUMENTITIES; i++) {
+		cudaMalloc(&accels[i], sizeof(vector3) * NUMENTITIES);
+	}
 
 
 
