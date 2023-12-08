@@ -18,8 +18,8 @@ __global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector
 
 	if (t < NUMENTITIES * NUMENTITIES) {
         accels[row]=&values[row*NUMENTITIES];	
-		accels[row][col] = values[row * NUMENTITIES + col];
-		
+		//accels[row][col] = values[row * NUMENTITIES + col];
+
 		if (row==col) {
 			FILL_VECTOR(accels[row][col],0,0,0);
 		}
