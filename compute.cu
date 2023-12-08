@@ -30,13 +30,10 @@ __global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector
 		double accelmag=-1*GRAV_CONSTANT*d_mass[col]/magnitude_sq;
 		FILL_VECTOR(accels[row][col],accelmag*distance[0]/magnitude,accelmag*distance[1]/magnitude,accelmag*distance[2]/magnitude);
 	}
+}
 
-	// Synchronize all threads in the block
-    __syncthreads();
 
-	//sum up the rows of our matrix to get effect on each entity, then update velocity and position.
-	//sync threads
-	
+__global__ void compute2electricboogaloo(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector3** accels, vector3* values){
 	if(row*col<NUMENTITIES){
 		vector3 accel_sum={0,0,0};
 		for (int k=0;k<3;k++){
