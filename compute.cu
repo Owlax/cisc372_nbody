@@ -47,7 +47,7 @@ __global__ void compute2electricboogaloo(vector3* d_hPos, vector3* d_hVel, doubl
 		//compute the new position based on the velocity and time interval
 		for (int k=0;k<3;k++){
 			d_hVel[row][k]+=accel_sum[k]*INTERVAL;
-			d_hPos[row][k]+=d_hVel[row][k]*INTERVAL;
+			d_hPos[row][k]=d_hVel[row][k]*INTERVAL;
 		}
 	}
 }
