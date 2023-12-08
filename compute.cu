@@ -12,11 +12,12 @@ __global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector
 	//first compute the pairwise accelerations.  Effect is on the first argument.
 	//start parallel here: have each thread compute how two objects affect eachother and update the matrix
 	//something like set i and j to the two dimensions of the resulting accel matrix and have one thread for each pair
-	int col = blockIdx.y * blockDim.y + threadIdx.y;
-    int row = blockIdx.x * blockDim.x + threadIdx.x;
+	int row = blockIdx.y * blockDim.y + threadIdx.y;
+    int col = blockIdx.x * blockDim.x + threadIdx.x;
 	
 	if (row < NUMENTITIES && col < NUMENTITIES) {
         accels[row]=&values[row*NUMENTITIES];	
+		accels[row * NUMENTITIES + col] = &values[row * NUMENTITIES + col];
 	}
 
 	if (row==col && row < NUMENTITIES && col < NUMENTITIES) {
