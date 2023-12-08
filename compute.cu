@@ -30,13 +30,7 @@ __global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector
 			FILL_VECTOR(accels[row][col],accelmag*distance[0]/magnitude,accelmag*distance[1]/magnitude,accelmag*distance[2]/magnitude);
 		}
 	}
-}
 
-
-__global__ void compute2electricboogaloo(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector3** accels, vector3* values){
-	int t = blockIdx.x * blockDim.x + threadIdx.x;
-	int row = t/NUMENTITIES;
-    int col = t%NUMENTITIES;
 
 	if(t<NUMENTITIES*NUMENTITIES){
 		vector3 accel_sum={0,0,0};
