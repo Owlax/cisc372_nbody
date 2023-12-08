@@ -133,8 +133,8 @@ __host__ int main(int argc, char **argv)
 		cudaDeviceSynchronize();
 	}
 
-    cudaMemcpy(hVel, d_vel, sizeof(vector3) * NUMENTITIES, cudaMemcpyDefault);
-    cudaMemcpy(hPos, d_pos, sizeof(vector3) * NUMENTITIES, cudaMemcpyDefault);
+    cudaMemcpy(hVel, d_hVel, sizeof(vector3) * NUMENTITIES, cudaMemcpyDefault);
+    cudaMemcpy(hPos, d_hPos, sizeof(vector3) * NUMENTITIES, cudaMemcpyDefault);
 	clock_t t1=clock()-t0;
 
 
