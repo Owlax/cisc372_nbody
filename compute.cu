@@ -12,10 +12,11 @@ __global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector
 	//first compute the pairwise accelerations.  Effect is on the first argument.
 	//start parallel here: have each thread compute how two objects affect eachother and update the matrix
 	//something like set i and j to the two dimensions of the resulting accel matrix and have one thread for each pair
-	int row = blockIdx.y * blockDim.y + threadIdx.y;
-    int col = blockIdx.x * blockDim.x + threadIdx.x;
+	int t = blockIdx.x * blockDim.x + threadIdx.x;
+	int row = t/NUMENTITIES;
+    int col = t%NUMENTITIES;
 
-	if (row < NUMENTITIES && col < NUMENTITIES) {
+	if (t < NUMENTITIES * NUMENTITIES) {
         accels[row]=&values[row*NUMENTITIES];	
 		accels[row * NUMENTITIES + col] = &values[row * NUMENTITIES + col];
 
@@ -28,7 +29,7 @@ __global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector
 			double magnitude_sq=distance[0]*distance[0]+distance[1]*distance[1]+distance[2]*distance[2];
 			double magnitude=sqrt(magnitude_sq);
 			double accelmag=-1*GRAV_CONSTANT*d_mass[col]/magnitude_sq;
-			//FILL_VECTOR(accels[row][col],0,0,0);//accelmag*distance[0]/magnitude,accelmag*distance[1]/magnitude,accelmag*distance[2]/magnitude);
+			FILL_VECTOR(accels[row][col],0,0,0);//accelmag*distance[0]/magnitude,accelmag*distance[1]/magnitude,accelmag*distance[2]/magnitude);
 		}
 	}
 }
