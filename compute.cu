@@ -26,10 +26,10 @@ __global__ void compute(vector3* d_hPos, vector3* d_hVel, double* d_mass, vector
 	else if(row < NUMENTITIES && col < NUMENTITIES){
 		vector3 distance;
 		for (int k=0;k<3;k++) distance[k]=d_hPos[row][k]-d_hPos[col][k];
-		/*double magnitude_sq=distance[0]*distance[0]+distance[1]*distance[1]+distance[2]*distance[2];
+		double magnitude_sq=distance[0]*distance[0]+distance[1]*distance[1]+distance[2]*distance[2];
 		double magnitude=sqrt(magnitude_sq);
 		double accelmag=-1*GRAV_CONSTANT*d_mass[col]/magnitude_sq;
-		FILL_VECTOR(accels[row][col],accelmag*distance[0]/magnitude,accelmag*distance[1]/magnitude,accelmag*distance[2]/magnitude);*/
+		/*FILL_VECTOR(accels[row][col],accelmag*distance[0]/magnitude,accelmag*distance[1]/magnitude,accelmag*distance[2]/magnitude);*/
 	}
 }
 
