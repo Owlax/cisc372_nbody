@@ -132,8 +132,9 @@ __host__ int main(int argc, char **argv)
 		//compute2electricboogaloo<<<blocks, BLOCK_SIZE>>>(d_hPos, d_hVel, d_mass, accels, values);
 		cudaDeviceSynchronize();
 	}
-	//cudaMemcpy(hPos, d_hPos, sizeof(vector3) * NUMENTITIES, cudaMemcpyDeviceToHost);
-	//cudaMemcpy(hVel, d_hVel, sizeof(vector3) * NUMENTITIES, cudaMemcpyDeviceToHost);
+
+    cudaMemcpy(hVel, d_vel, sizeof(vector3) * NUMENTITIES, cudaMemcpyDefault);
+    cudaMemcpy(hPos, d_pos, sizeof(vector3) * NUMENTITIES, cudaMemcpyDefault);
 	clock_t t1=clock()-t0;
 
 
