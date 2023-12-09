@@ -123,7 +123,7 @@ __host__ int main(int argc, char **argv)
 	cudaMalloc((double**)&d_mass, sizeof(double) * NUMENTITIES);
 	cudaMemcpy(d_mass, mass, sizeof(double) * NUMENTITIES, cudaMemcpyHostToDevice);
 	cudaDeviceSynchronize();
-	const int BLOCK_SIZE = 256;
+	const int BLOCK_SIZE = 1024;
 	int blocks = (NUMENTITIES + BLOCK_SIZE - 1) / BLOCK_SIZE;
 	//calls kernel
 	for (t_now=0;t_now<DURATION;t_now+=INTERVAL){
